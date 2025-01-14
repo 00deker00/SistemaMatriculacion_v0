@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatriculaTest {
-/*
+
     private static final String ERROR_EXCEPCION = "Debería haber saltado la excepción.";
     private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
     private static final String ALUMNO_NO_ESPERADO = "El alumno devuelto no es el que debería ser.";
@@ -117,6 +117,7 @@ public class MatriculaTest {
             assertEquals(coleccionAsignaturas[2], matricula.getColeccionAsignaturas()[2],ASIGNATURA_NO_ESPERADA);
 
         } catch (Exception e) {
+
             fail(ERROR_NO_EXCEPCION);
         }
     }
@@ -137,6 +138,7 @@ public class MatriculaTest {
             assertEquals(coleccionAsignaturas[2], matricula1.getColeccionAsignaturas()[2],ASIGNATURA_NO_ESPERADA);;
 
         } catch (Exception e) {
+
             fail(ERROR_NO_EXCEPCION);
         }
     }
@@ -312,7 +314,6 @@ public class MatriculaTest {
     }
 
 
-
     @Test
     public void constructorMatriculaNulaLanzaExcepcion() {
         Matricula matricula = null;
@@ -413,6 +414,7 @@ public class MatriculaTest {
 
         }
         catch (Exception e) {
+             e.printStackTrace();
             fail(TIPO_EXCEPCION_NO_CORRECTA);
         }
     }
@@ -440,5 +442,5 @@ public class MatriculaTest {
 
 
     }
-*/
+
 }

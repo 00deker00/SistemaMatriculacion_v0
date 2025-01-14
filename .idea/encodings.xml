@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/MainApp.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/dominio/Asignatura.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/dominio/EspecialidadProfesorado.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/dominio/Matricula.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/negocio/Alumnos.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/negocio/Asignaturas.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/negocio/CiclosFormativos.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/negocio/Matriculas.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/matriculacion/vista/Consola.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/matriculacion/dominio/AlumnoTest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/matriculacion/dominio/AsignaturaTest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/matriculacion/dominio/CursoTest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/matriculacion/negocio/AlumnosTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/matriculacion/negocio/Matriculas.java" charset="UTF-8" />
   </component>
 </project>
