@@ -75,7 +75,7 @@ public class Asignaturas {
         if (asignatura == null) {
             throw new NullPointerException("ERROR: No se puede buscar una asignatura nula.");
         }
-
+//
 
         if(coleccionAsignaturas.indexOf(asignatura) == -1){
             return null;
