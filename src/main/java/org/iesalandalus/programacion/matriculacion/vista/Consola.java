@@ -1,27 +1,26 @@
 package org.iesalandalus.programacion.matriculacion.vista;
 
-import com.sun.tools.javac.Main;
 import org.iesalandalus.programacion.matriculacion.MainApp;
-import org.iesalandalus.programacion.matriculacion.dominio.*;
-import org.iesalandalus.programacion.matriculacion.negocio.Alumnos;
-import org.iesalandalus.programacion.matriculacion.negocio.Asignaturas;
-import org.iesalandalus.programacion.matriculacion.negocio.CiclosFormativos;
+//import org.iesalandalus.programacion.matriculacion.dominio.*;
+import org.iesalandalus.programacion.matriculacion.modelo.Modelo;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
-
 
 
 public class Consola {
 
 
 
-    //private static final Scanner SCANNER = new Scanner(System.in);
-    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//COMENTADO PORQUE NO APARECE EN EL DIAGRAMA DE CLASES
+    //private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     // Constructor privado para evitar instanciación
     private Consola() {}
@@ -96,8 +95,6 @@ public class Consola {
         System.out.print("Introduce el nombre del alumno: ");
         String nombre = Entrada.cadena();
 
-        //System.out.print("Introduce el DNI del alumno: ");
-        //String dni = Entrada.cadena();
         String dni;
         String DNI = "\\d{8}[A-Za-z]";
         do {
@@ -149,7 +146,9 @@ public class Consola {
             System.out.print(mensaje);
             String fechaStr = Entrada.cadena();
             try {
-                fecha = LocalDate.parse(fechaStr, FORMATO_FECHA);
+                //CAMBIADO POR FORMATO FECHA CLASE ALUMNO
+                //fecha = LocalDate.parse(fechaStr, FORMATO_FECHA);
+                fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern(Alumno.FORMATO_FECHA));
                 fechaValida = true;
             } catch (DateTimeParseException e) {
                 System.out.println("ERROR: La fecha introducida no tiene un formato válido.");
@@ -215,12 +214,12 @@ public class Consola {
     }
 
 
-
-    public static void mostrarCiclosFormativos(CiclosFormativos ciclosFormativos) {
-        for (CicloFormativo cicloFormativo : ciclosFormativos.get()) {
+    public static void mostrarCiclosFormativos(CicloFormativo[] ciclosFormativos) {
+        for (CicloFormativo cicloFormativo : ciclosFormativos) {
             System.out.println(cicloFormativo);
         }
     }
+
 
 
     public static CicloFormativo getCicloFormativoPorCodigo() {
@@ -274,7 +273,7 @@ public class Consola {
 
 
 
-    public static Asignatura leerAsignatura(CiclosFormativos ciclosFormativos) {
+    public static Asignatura leerAsignatura(CicloFormativo cicloFormativo) {
         try {
             System.out.print("Introduce el código de la asignatura: ");
             String codigo = Entrada.cadena();
@@ -290,7 +289,6 @@ public class Consola {
 
             System.out.print("Introduce el número de horas anuales de la asignatura: ");
             int horasAnuales = Entrada.entero();
-            //SCANNER.nextLine(); // Limpiar el buffer
             if (horasAnuales <= 0) {
                 throw new IllegalArgumentException("ERROR: El número de horas anuales debe ser mayor que cero.");
             }
@@ -299,14 +297,13 @@ public class Consola {
 
             System.out.print("Introduce el número de horas de desdoble de la asignatura: ");
             int horasDesdoble = Entrada.entero();
-            //SCANNER.nextLine(); // Limpiar el buffer
             if (horasDesdoble < 0) {
                 throw new IllegalArgumentException("ERROR: El número de horas de desdoble no puede ser negativo.");
             }
 
             EspecialidadProfesorado especialidad = leerEspecialidadProfesorado();
 
-            CicloFormativo cicloFormativo = getCicloFormativoPorCodigo();
+            //CicloFormativo cicloFormativo = getCicloFormativoPorCodigo();
 
             return new Asignatura(codigo, nombre, horasAnuales, curso, horasDesdoble, especialidad, cicloFormativo);
         } catch (NullPointerException | IllegalArgumentException e) {
@@ -326,9 +323,9 @@ public class Consola {
             if (codigo == null || codigo.isBlank()) {
                 throw new IllegalArgumentException("ERROR: El código no puede ser nulo o estar en blanco.");
             }
-
-            return MainApp.asignaturas.buscar(new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, new CicloFormativo(1234, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000)));
-            //return new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, new CicloFormativo(1234, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000));
+//DESCOMENTADA LA LÍNEA 326 Y COMENTADA LA LÍNEA 325
+            //return MainApp.controlador.buscar(new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, new CicloFormativo(1234, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000)));
+            return new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, new CicloFormativo(1234, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000));
         } catch (IllegalArgumentException e) {
 
             throw e;
@@ -337,11 +334,12 @@ public class Consola {
 
 
 
-    private static void mostrarAsignaturas(Asignaturas asignaturas) {
-        for (Asignatura asignatura : asignaturas.get()) {
+    public static void mostrarAsignaturas(Asignatura[] asignaturas) {
+        for (Asignatura asignatura : asignaturas) {
             System.out.println(asignatura);
         }
     }
+
 
     private static boolean asignaturaYaMatriculada(Asignatura[] asignaturasMatricula, Asignatura asignatura) {
         for (Asignatura asig : asignaturasMatricula) {
@@ -353,9 +351,8 @@ public class Consola {
     }
 
 
-    public static Matricula leerMatricula(Alumnos alumnos, Asignaturas asignaturas) {
+    public static Matricula leerMatricula(Alumno alumno, Asignatura[] asignaturas) {
         try {
-            Alumno alumno = getAlumnoPorDni();
 
             System.out.print("Introduce el curso académico: ");
             String cursoAcademico = Entrada.cadena();
@@ -374,7 +371,7 @@ public class Consola {
             Asignatura[] coleccionAsignaturas = new Asignatura[numAsignaturas];
             for (int i = 0; i < numAsignaturas; i++) {
                 System.out.println("Introduce los datos de la asignatura " + (i + 1) + ":");
-                CiclosFormativos ciclosFormativos = new CiclosFormativos(asignaturas.getCapacidad());  // Crear un objeto CiclosFormativos temporalment
+                //CiclosFormativos ciclosFormativos = new CiclosFormativos(Modelo.CAPACIDAD);  // Crear un objeto CiclosFormativos temporalment
 
                 Asignatura asignatura = getAsignaturaPorCodigo();
                 if (!asignaturaYaMatriculada(coleccionAsignaturas, asignatura)) {
@@ -392,6 +389,37 @@ public class Consola {
         }
     }
 
+    public static Asignatura[] elegirAsignaturasMatricula(Asignatura[] asignaturas) {
+        System.out.print("Introduce el número de asignaturas para la matrícula: ");
+        int numAsignaturas = Entrada.entero();
+        if (numAsignaturas <= 0) {
+            throw new IllegalArgumentException("ERROR: El número de asignaturas debe ser mayor que cero.");
+        }
+
+        Asignatura[] coleccionAsignaturas = new Asignatura[numAsignaturas];
+        for (int i = 0; i < numAsignaturas; i++) {
+            System.out.println("Introduce el código de la asignatura " + (i + 1) + ":");
+            String codigo = Entrada.cadena();
+            boolean encontrada = false;
+            for (Asignatura asignatura : asignaturas) {
+                if (asignatura.getCodigo().equals(codigo)) {
+                    if (!asignaturaYaMatriculada(coleccionAsignaturas, asignatura)) {
+                        coleccionAsignaturas[i] = asignatura;
+                        encontrada = true;
+                        break;
+                    } else {
+                        System.out.println("ERROR: La asignatura ya está matriculada.");
+                    }
+                }
+            }
+            if (!encontrada) {
+                System.out.println("ERROR: La asignatura con código " + codigo + " no se encuentra disponible.");
+                i--;
+            }
+        }
+        return coleccionAsignaturas;
+    }
+
 
     // Método para obtener una matrícula por identificador
     public static Matricula getMatriculaPorIdentificador() {
@@ -405,7 +433,7 @@ public class Consola {
 
 
             return new Matricula(idMatricula, "21-22", LocalDate.now(),
-                    new Alumno("NombreFicticio", "12345678A", "correo@ejemplo.com", "123456789", LocalDate.of(2000, 1, 1)),
+                    new Alumno("NombreFicticio", "12345678Z", "correo@ejemplo.com", "123456789", LocalDate.of(2000, 1, 1)),
                     new Asignatura[0]);
         } catch (IllegalArgumentException | OperationNotSupportedException e) {
 

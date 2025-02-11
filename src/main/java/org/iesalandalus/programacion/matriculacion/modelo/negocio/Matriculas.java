@@ -1,9 +1,9 @@
-package org.iesalandalus.programacion.matriculacion.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
-import org.iesalandalus.programacion.matriculacion.dominio.Alumno;
-import org.iesalandalus.programacion.matriculacion.dominio.Asignatura;
-import org.iesalandalus.programacion.matriculacion.dominio.CicloFormativo;
-import org.iesalandalus.programacion.matriculacion.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 
 import javax.naming.OperationNotSupportedException;
 //TODO ES D COLOR
