@@ -6,62 +6,56 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 
 import javax.naming.OperationNotSupportedException;
-//TODO ES D COLOR
+import java.util.ArrayList;
+
 public class Matriculas {
 
 
 
 
-    private int capacidad;
-    private int tamano;
-    private Matricula[] coleccionMatriculas;
+    private ArrayList<Matricula> coleccionMatriculas;
 
 
-    public Matriculas(int capacidad) {
-        if (capacidad <= 0) {
-            throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-        }
-        this.capacidad = capacidad;
-        this.tamano = 0;
-        this.coleccionMatriculas = new Matricula[capacidad];
+    public Matriculas() {
+
+        this.coleccionMatriculas = new ArrayList<Matricula>();
     }
 
 
-    public Matricula[] get() {
+    public ArrayList<Matricula> get() {
         return copiaProfundaMatriculas();
     }
 
 
-    private Matricula[] copiaProfundaMatriculas() {
-        Matricula[] copia = new Matricula[tamano];
-        for (int i = 0; i < tamano; i++) {
-            copia[i] = new Matricula(coleccionMatriculas[i]); // Usar el constructor de copia
+    private ArrayList<Matricula> copiaProfundaMatriculas() {
+
+        ArrayList<Matricula> copiaMatricula = new ArrayList<>();
+        for (Matricula matricula : coleccionMatriculas) {
+            copiaMatricula.add(new Matricula (matricula));
         }
-        return copia;
+
+        return copiaMatricula;
+
     }
 
 
-    public int getCapacidad() {
-        return capacidad;
-    }
 
 
     public int getTamano() {
-        return tamano;
+        return coleccionMatriculas.size();
     }
 
     public void insertar(Matricula matricula) throws OperationNotSupportedException {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede insertar una matricula nula.");
         }
-        if (tamano >= capacidad) {
-            throw new OperationNotSupportedException("ERROR: No se aceptan más matriculas.");
-        }
+
+
         if (buscar(matricula) != null) {
             throw new OperationNotSupportedException("ERROR: Ya existe una matricula con ese código.");
         }
-        coleccionMatriculas[tamano] = new Matricula(matricula); // Usar el constructor de copia
-        tamano++;
+        coleccionMatriculas.add(new Matricula (matricula));
+
     }
 
 
@@ -69,29 +63,11 @@ public class Matriculas {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede buscar una matrícula nulo.");
         }
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionMatriculas[i].equals(matricula)) {
-                return i;
-            }
-        }
-        return -1; // Si no se encuentra, devolver -1
+
+
+        return coleccionMatriculas.indexOf(matricula);
+
     }
-
-    private boolean tamanoSuperado(int indice) {
-        if (indice < 0) {
-            throw new IllegalArgumentException("ERROR: El índice no puede ser negativo.");
-        }
-        return indice >= tamano;
-    }
-
-    private boolean capacidadSuperada(int indice) {
-        if (indice < 0) {
-            throw new IllegalArgumentException("ERROR: El índice no puede ser negativo.");
-        }
-        return indice >= capacidad;
-    }
-
-
 
 
 
@@ -101,15 +77,18 @@ public class Matriculas {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede buscar un alumno nulo.");
         }
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionMatriculas[i].equals(matricula)) {
-                return new Matricula(coleccionMatriculas[i]); // Usar el constructor de copia
-            }
+
+        Matricula matriculaBuscada = coleccionMatriculas.get((coleccionMatriculas.indexOf(matricula)));
+
+        if (buscarIndice(matricula) == -1){
+            return null;
+        }else{
+            return matriculaBuscada;
         }
-        return null;
+
     }
 
-
+//TODO
     public void borrar(Matricula matricula) throws OperationNotSupportedException {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede borrar una matricula nula.");
@@ -131,33 +110,24 @@ public class Matriculas {
         tamano--;
     }
 
-    // Método privado para desplazar los elementos una posición hacia la izquierda
-    private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-        for (int i = indice; i < tamano - 1; i++) {
-            coleccionMatriculas[i] = coleccionMatriculas[i + 1];
-        }
-        coleccionMatriculas[tamano - 1] = null; // Liberar el espacio al final del array
-    }
 
 
-    public Matricula[] get(Alumno alumno) {
+    public ArrayList<Matricula> get(Alumno alumno) {
         if (alumno == null) {
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un alumno nulo.");
         }
-        int count = 0;
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionMatriculas[i].getAlumno().equals(alumno)) {
-                count++;
-            }
+
+        ArrayList<Matricula> listaMatricula = new ArrayList<Matricula>();
+
+        for (Matricula mt : coleccionMatriculas) {
+            if (mt.getAlumno().equals(alumno)){
+                listaMatricula.add(new Matricula(mt));
+            };
         }
-        Matricula[] coleccionPorAlumno = new Matricula[count];
-        int indice = 0;
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionMatriculas[i].getAlumno().equals(alumno)) {
-                coleccionPorAlumno[indice++] = new Matricula(coleccionMatriculas[i]);
-            }
-        }
-        return coleccionPorAlumno;
+
+
+        return listaMatricula;
+
     }
 
 
