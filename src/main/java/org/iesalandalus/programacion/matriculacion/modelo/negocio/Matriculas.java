@@ -8,9 +8,10 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 
+
+
+
 public class Matriculas {
-
-
 
 
     private ArrayList<Matricula> coleccionMatriculas;
@@ -50,7 +51,6 @@ public class Matriculas {
             throw new NullPointerException("ERROR: No se puede insertar una matricula nula.");
         }
 
-
         if (buscar(matricula) != null) {
             throw new OperationNotSupportedException("ERROR: Ya existe una matricula con ese código.");
         }
@@ -59,6 +59,15 @@ public class Matriculas {
     }
 
 
+
+
+
+
+
+
+
+
+/*
     private int buscarIndice(Matricula matricula) {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede buscar una matrícula nulo.");
@@ -68,7 +77,7 @@ public class Matriculas {
         return coleccionMatriculas.indexOf(matricula);
 
     }
-
+*/
 
 
 
@@ -80,34 +89,40 @@ public class Matriculas {
 
         Matricula matriculaBuscada = coleccionMatriculas.get((coleccionMatriculas.indexOf(matricula)));
 
+        if(coleccionMatriculas.indexOf(matricula) == -1){
+            return null;
+        }else{
+            Matricula matriculaBuscada = coleccionMatriculas.get(coleccionMatriculas.indexOf(matricula));
+            return matriculaBuscada;
+        }
+
+
+        /*
+        Alumno alumnoA = coleccionAlumnos.get(coleccionAlumnos.indexOf(alumno));
+        return new Alumno (alumnoA);
+
         if (buscarIndice(matricula) == -1){
             return null;
         }else{
             return matriculaBuscada;
         }
 
+         */
+
     }
 
-//TODO
+
     public void borrar(Matricula matricula) throws OperationNotSupportedException {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede borrar una matricula nula.");
         }
 
-        int indice = -1;
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionMatriculas[i].equals(matricula)) {
-                indice = i;
-                break;
-            }
+        if(coleccionMatriculas.indexOf(matricula) == -1){
+            throw new IllegalArgumentException("ERROR: No existe la matrícula a borrar");
+        }else{
+            coleccionMatriculas.remove(matricula);
         }
 
-        if (indice == -1) {
-            throw new OperationNotSupportedException("ERROR: No existe ninguna matricula como la indicada.");
-        }
-
-        desplazarUnaPosicionHaciaIzquierda(indice);
-        tamano--;
     }
 
 
@@ -125,12 +140,34 @@ public class Matriculas {
             };
         }
 
-
         return listaMatricula;
-
     }
 
 
+
+
+
+
+    //TODO ESTO NI IDEA DE COMO HACERLO, Spoiler, parece que funciona
+    public ArrayList<Matricula> get(String cursoAcademico) {
+        if (cursoAcademico == null) {
+            throw new NullPointerException("ERROR: No se puede buscar matrículas de un curso académico nulo.");
+        }
+
+        ArrayList<Matricula> listaCursoAcademico = new ArrayList<Matricula>();
+
+        for (Matricula matri : coleccionMatriculas){
+            if(matri.getCursoAcademico().equals(cursoAcademico){
+                listaCursoAcademico.add(new Matricula(matri));
+            };
+        }
+
+        return listaCursoAcademico;
+
+    }
+    //TODO: Lo de abajo es lo que había antes
+
+/*
     public Matricula[] get(String cursoAcademico) {
         if (cursoAcademico == null) {
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un curso académico nulo.");
@@ -151,11 +188,28 @@ public class Matriculas {
         return coleccionPorCursoAcademico;
     }
 
+*/
 
-    public Matricula[] get(CicloFormativo cicloFormativo) {
-//        if (cicloFormativo == null) {
-//            throw new NullPointerException("ERROR: No se puede buscar matrículas de un ciclo formativo nulo.");
-//        }
+//TODO ME QUEDA POR HACER
+    public ArrayList<Matricula> get(CicloFormativo cicloFormativo) {
+        if (cicloFormativo == null) {
+            throw new NullPointerException("ERROR: No se puede buscar matrículas de un ciclo formativo nulo.");
+        }
+
+/*
+        ArrayList<Matricula> listaCiclosFormativos = new ArrayList<Matricula>();
+
+        for (Matricula matricu : coleccionMatriculas){
+            if (matricu.getCicloFormativo().equals(cicloFormativo)){
+                listaCiclosFormativos.add(new Matricula(matricu));
+            }
+        }
+
+        return listaCiclosFormativos;
+
+*/
+
+
         int count = 0;
         for (int i = 0; i < tamano; i++) {
             Asignatura[] asignaturas = coleccionMatriculas[i].getColeccionAsignaturas();
