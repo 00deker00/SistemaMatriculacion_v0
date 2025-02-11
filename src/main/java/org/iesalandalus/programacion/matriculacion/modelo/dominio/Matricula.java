@@ -4,6 +4,7 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Matricula {
@@ -26,11 +27,11 @@ public class Matricula {
 
     //Atributos del constructor:
     private Alumno alumno;
-    private Asignatura[] coleccionAsignaturas;
+    private ArrayList<Asignatura> coleccionAsignaturas;
 
 
     //Constructor
-    public Matricula(int idMatricula, String cursoAcademico, LocalDate fechaMatriculacion, Alumno alumno, Asignatura[] coleccionAsignaturas) throws OperationNotSupportedException {
+    public Matricula(int idMatricula, String cursoAcademico, LocalDate fechaMatriculacion, Alumno alumno, ArrayList<Asignatura> coleccionAsignaturas) throws OperationNotSupportedException {
         setIdMatricula(idMatricula);
         setCursoAcademico(cursoAcademico);
         setFechaMatriculacion(fechaMatriculacion);
@@ -41,7 +42,6 @@ public class Matricula {
         }
 
         setColeccionAsignaturas(coleccionAsignaturas);
-
 
     }
 
@@ -161,17 +161,17 @@ public class Matricula {
     }
 
 
-    public Asignatura[] getColeccionAsignaturas(){
+    public ArrayList<Asignatura> getColeccionAsignaturas(){
         return coleccionAsignaturas;
     }
 
     //TODO PUEDE ESTAR MAL
-    public void setColeccionAsignaturas(Asignatura[] coleccionAsignaturas) throws OperationNotSupportedException {
+    public void setColeccionAsignaturas(ArrayList<Asignatura> coleccionAsignaturas) throws OperationNotSupportedException {
         if (coleccionAsignaturas == null) {
             throw new NullPointerException("ERROR: La lista de asignaturas de una matrícula no puede ser nula.");
         }
 
-        if (coleccionAsignaturas.length > MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA) {
+        if (coleccionAsignaturas.size() > MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA) {
             throw new IllegalArgumentException("ERROR: El número de asignaturas no puede superar el máximo permitido.");
         }
 
@@ -180,7 +180,7 @@ public class Matricula {
 
 
 
-    private boolean superaMaximoNumeroHorasMatricula(Asignatura[] asignaturasMatricula) {
+    private boolean superaMaximoNumeroHorasMatricula(ArrayList<Asignatura> asignaturasMatricula) {
         if (asignaturasMatricula == null) {
             throw new NullPointerException("ERROR: La lista de asignaturas de una matrícula no puede ser nula.");
         }
@@ -188,21 +188,19 @@ public class Matricula {
         // Inicializa una variable para sumar las horas totales
         int totalHoras = 0;
 
-        for (int i = 0; i < asignaturasMatricula.length; i++) {
-            if(asignaturasMatricula[i]!=null){
-                totalHoras += asignaturasMatricula[i].getHorasAnuales();
-            }
+
+        for (Asignatura bbb : coleccionAsignaturas){
+            totalHoras += bbb.getHorasAnuales();
         }
+
 
         if (totalHoras > MAXIMO_NUMERO_HORAS_MATRICULA ) {
          return true;
         }
-
         return false;
     }
 
 
-    //TODO REVISAR
     private String asignaturasMatricula() {
         StringBuilder sb = new StringBuilder();
         for (Asignatura asignatura : coleccionAsignaturas) {
