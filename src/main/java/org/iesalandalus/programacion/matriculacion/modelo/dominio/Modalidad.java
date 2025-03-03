@@ -8,7 +8,7 @@ public enum Modalidad {
 
     private Modalidad (String cadenaAMostrar){
         this.cadenaAMostrar = cadenaAMostrar;
-    };
+    }
 
     //ORDINAL DEVUELVE LAS OPCIONES CON UN NÚMERO EMPEZANDO DESDE 0
     //PONER +1?
