@@ -46,6 +46,7 @@ public class Matriculas {
         return coleccionMatriculas.size();
     }
 
+
     public void insertar(Matricula matricula) throws OperationNotSupportedException {
         if (matricula == null) {
             throw new NullPointerException("ERROR: No se puede insertar una matricula nula.");
@@ -84,16 +85,16 @@ public class Matriculas {
 
     public Matricula buscar(Matricula matricula) {
         if (matricula == null) {
-            throw new NullPointerException("ERROR: No se puede buscar un alumno nulo.");
+            throw new NullPointerException("ERROR: No se puede buscar una matricula nula.");
         }
 
-        Matricula matriculaBuscada = coleccionMatriculas.get((coleccionMatriculas.indexOf(matricula)));
+
 
         if(coleccionMatriculas.indexOf(matricula) == -1){
             return null;
         }else{
             Matricula matriculaBuscada = coleccionMatriculas.get(coleccionMatriculas.indexOf(matricula));
-            return matriculaBuscada;
+            return new Matricula (matriculaBuscada);
         }
 
 
@@ -132,10 +133,10 @@ public class Matriculas {
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un alumno nulo.");
         }
 
-        ArrayList<Matricula> listaMatricula = new ArrayList<Matricula>();
+        ArrayList<Matricula> listaMatricula = new ArrayList<>();
 
         for (Matricula mt : coleccionMatriculas) {
-            if (mt.getAlumno().equals(alumno)){
+            if (mt != null && mt.getAlumno().equals(alumno)){
                 listaMatricula.add(new Matricula(mt));
             };
         }
@@ -154,10 +155,10 @@ public class Matriculas {
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un curso académico nulo.");
         }
 
-        ArrayList<Matricula> listaCursoAcademico = new ArrayList<Matricula>();
+        ArrayList<Matricula> listaCursoAcademico = new ArrayList<>();
 
         for (Matricula matri : coleccionMatriculas){
-            if(matri.getCursoAcademico().equals(cursoAcademico){
+            if(matri != null && matri.getCursoAcademico().equals(cursoAcademico)){
                 listaCursoAcademico.add(new Matricula(matri));
             };
         }
@@ -165,6 +166,7 @@ public class Matriculas {
         return listaCursoAcademico;
 
     }
+    //TODO ME queda algo por hacer
     //TODO: Lo de abajo es lo que había antes
 
 /*
@@ -190,48 +192,25 @@ public class Matriculas {
 
 */
 
-//TODO ME QUEDA POR HACER
     public ArrayList<Matricula> get(CicloFormativo cicloFormativo) {
         if (cicloFormativo == null) {
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un ciclo formativo nulo.");
         }
 
-/*
-        ArrayList<Matricula> listaCiclosFormativos = new ArrayList<Matricula>();
+        ArrayList<Matricula> listaCiclosFormativos = new ArrayList<>();
 
-        for (Matricula matricu : coleccionMatriculas){
-            if (matricu.getCicloFormativo().equals(cicloFormativo)){
-                listaCiclosFormativos.add(new Matricula(matricu));
+        for (Matricula matricula : coleccionMatriculas){
+            if(matricula != null){
+                for (Asignatura asignatura : matricula.getColeccionAsignaturas()){
+                    if (asignatura != null && asignatura.getCicloFormativo().equals(cicloFormativo)){
+                        listaCiclosFormativos.add(matricula);
+                        break;
+                    }
+                }
             }
         }
-
         return listaCiclosFormativos;
 
-*/
-
-
-        int count = 0;
-        for (int i = 0; i < tamano; i++) {
-            Asignatura[] asignaturas = coleccionMatriculas[i].getColeccionAsignaturas();
-            for (Asignatura asignatura : asignaturas) {
-                if (asignatura.getCicloFormativo().equals(cicloFormativo)) {
-                    count++;
-                    break;
-                }
-            }
-        }
-        Matricula[] coleccionPorCicloFormativo = new Matricula[count];
-        int indice = 0;
-        for (int i = 0; i < tamano; i++) {
-            Asignatura[] asignaturas = coleccionMatriculas[i].getColeccionAsignaturas();
-            for (Asignatura asignatura : asignaturas) {
-                if (asignatura.getCicloFormativo().equals(cicloFormativo)) {
-                    coleccionPorCicloFormativo[indice++] = new Matricula(coleccionMatriculas[i]);
-                    break;
-                }
-            }
-        }
-        return coleccionPorCicloFormativo;
     }
 
 

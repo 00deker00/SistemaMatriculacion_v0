@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 import org.iesalandalus.programacion.matriculacion.vista.Vista;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
 
 public class Controlador {
     private Vista vista;
@@ -20,8 +21,8 @@ public class Controlador {
         }
         this.modelo = modelo;
         this.vista = vista;
+        //LLAMAR A CONTROLADOR
         vista.setControlador(this);
-        //this.vista.setControlador(this);
     }
 
     public void comenzar(){
@@ -51,7 +52,8 @@ public class Controlador {
         modelo.borrar(alumno);
     }
 
-    public Alumno[] getAlumnos(){
+    //OBTIENE A TODOS LOS ALUMNOS REGISTRADOS EN EL MODELO.
+    public ArrayList<Alumno> getAlumnos(){
         return modelo.getAlumnos();
     }
 
@@ -70,7 +72,8 @@ public class Controlador {
         modelo.borrar(asignatura);
     }
 
-    public Asignatura[] getAsignaturas(){
+    //OBTIENE TODAS LAS ASIGNATURAS REGISTRADAS EN EL MODELO.
+    public ArrayList<Asignatura> getAsignaturas(){
         return modelo.getAsignaturas();
     }
 
@@ -90,7 +93,8 @@ public class Controlador {
         modelo.borrar(cicloFormativo);
     }
 
-    public CicloFormativo[] getCiclosFormativos(){
+    //OBTIENE A TODOS LOS CICLOS FORMATIVOS REGISTRADOS EN EL MODELO.
+    public ArrayList<CicloFormativo> getCiclosFormativos(){
         return modelo.getCicloFormativos();
     }
 
@@ -110,26 +114,30 @@ public class Controlador {
         modelo.borrar(matricula);
     }
 
-
-    public Matricula[] getMatriculas(){
+    //OBTIENE TODAS LAS MATRICULAS REGISTRADAS EN EL MODELO.
+    public ArrayList<Matricula> getMatriculas(){
         return modelo.getMatriculas();
     }
 
-    public Matricula[] getMatriculas(Alumno alumno){
+
+    //OBTIENE LAS MATRICULAS DE UN ALUMNO CONCRETO.
+    public ArrayList<Matricula> getMatriculas(Alumno alumno){
         if(alumno == null){
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un alumno nulo");
         }
         return modelo.getMatriculas(alumno);
     }
 
-    public Matricula[] getMatriculas(CicloFormativo cicloFormativo){
+    //OBTIENE LAS MATRICULAS DE UN CICLO FORMATIVO EN CONCRETO.
+    public ArrayList<Matricula> getMatriculas(CicloFormativo cicloFormativo){
         if(cicloFormativo==null){
             throw new NullPointerException("ERROR: No se puede buscar matriculas de un ciclo formativo nulo.");
         }
         return modelo.getMatriculas(cicloFormativo);
     }
 
-    public Matricula[] getMatriculas(String cursoAcademico){
+    //OBTIENE LAS MATRICULAS DE UN CURSO ACADÉMICO EN CONCRETO.
+    public ArrayList<Matricula> getMatriculas(String cursoAcademico){
         if (cursoAcademico==null){
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un curso académico nulo");
         }

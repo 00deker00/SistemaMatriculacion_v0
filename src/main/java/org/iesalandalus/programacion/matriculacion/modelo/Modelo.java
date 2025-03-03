@@ -10,12 +10,14 @@ import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativ
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Matriculas;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
+
 
 public class Modelo {
 
 
     // ATRIBUTOS
-    public static final int CAPACIDAD = 100; // Inicializa con una capacidad adecuada
+    //public static final int CAPACIDAD = 100; // Inicializa con una capacidad adecuada
 
     // Atributos de clases de negocio
     private Alumnos alumnos;
@@ -26,10 +28,10 @@ public class Modelo {
     // MÉTODOS
 
     public void comenzar(){ //INSTANCIAS de negocio
-        alumnos = new Alumnos(CAPACIDAD);
-        matriculas = new Matriculas(CAPACIDAD);
-        asignaturas = new Asignaturas(CAPACIDAD);
-        ciclosFormativos = new CiclosFormativos(CAPACIDAD);
+        alumnos = new Alumnos();
+        matriculas = new Matriculas();
+        asignaturas = new Asignaturas();
+        ciclosFormativos = new CiclosFormativos();
         System.out.println("Sistema de matriculas iniciado");
     }
 
@@ -37,7 +39,7 @@ public class Modelo {
         System.out.println("El modelo ha terminado");
     }
 
-    //NOTA: EN EL DIAGRAMA DE CLASES PONÍA OTRO ORDEN, NO OBSTANTE, YO LO HE HECHO ASÍ SIGUIENDO EL ORDEN DE CREACIÓN DEL ENUNCIADO.
+
 
     public void insertar(Alumno alumno) throws OperationNotSupportedException {
         if (alumno == null){
@@ -68,6 +70,7 @@ public class Modelo {
     }
 
 
+    /*Métodos buscar que devuelven la instancia del elemento encontrado si existe*/
 
     public Alumno buscar(Alumno alumno) {
         if (alumno==null){
@@ -98,7 +101,7 @@ public class Modelo {
     }
 
 
-
+    /*Métodos borrar*/
     public void borrar(Alumno alumno) throws OperationNotSupportedException {
         if (alumno == null){
             throw new NullPointerException("ERROR: No se puede borrar un alumno nulo.");
@@ -128,45 +131,114 @@ public class Modelo {
     }
 
 
-    //Los que van con el metodo get de cada clase
-    public Alumno[] getAlumnos() {
+    //Métodos get que devuelven la lista de los diferentes elementos del programa
+    public ArrayList<Alumno> getAlumnos() {
         return alumnos.get();
     }
 
-    public Asignatura[] getAsignaturas() {
+    public ArrayList<Asignatura> getAsignaturas() {
         return asignaturas.get();
     }
 
-    public CicloFormativo[] getCicloFormativos() {
+    public ArrayList<CicloFormativo> getCicloFormativos() {
         return ciclosFormativos.get();
     }
 
-    public Matricula[] getMatriculas() {
+    public ArrayList<Matricula> getMatriculas() {
         return matriculas.get();
     }
 
 
 
 
-    public Matricula[] getMatriculas(Alumno alumno) {
+
+    public ArrayList<Matricula> getMatriculas(Alumno alumno) {
         if (alumno == null){
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un alumno nulo.");
         }
-        return matriculas.get(alumno);
+
+
+        ArrayList<Matricula> matriculas = getMatriculas();
+        ArrayList<Matricula> matriculasAlumno = new ArrayList<>();
+
+        for (Matricula matricula : matriculas) {
+            if (matricula != null && matricula.getAlumno().equals(alumno)) {
+                matriculasAlumno.add(matricula);
+            }
+        }
+
+        return matriculasAlumno;
+
+
+
+
+        /*
+        ArrayList<Matricula> matriculas = getMatriculas();
+        ArrayList<Matricula> matriculasAlumno = matriculas.stream()
+                .filter(matricula -> matricula != null && matricula.getAlumno().equals(alumno))
+                .collect(Collectors.toList());
+
+        return matriculasAlumno;
+        */
+
+        /*return matriculas.get(alumno);*/
     }
 
-    public Matricula[] getMatriculas(CicloFormativo cicloFormativo) {
+    public ArrayList<Matricula> getMatriculas(CicloFormativo cicloFormativo) {
         if (cicloFormativo == null) {
             throw new NullPointerException("ERROR: No se puede buscar matrículas de un ciclo formativo nulo.");
-        } return matriculas.get(cicloFormativo);
-    }
+        }
+        /*ArrayList<Matricula> matriculas =getMatriculas();
+
+        ArrayList<Matricula> matriculasCiclo = matriculas.stream().filter(matricula ->matricula != null && matricula.getColeccionAsignaturas().stream()
+                        .anyMatch(asignatura -> asignatura.getCicloFormativo().equals(cicloFormativo)))
+                .collect(Collectors.toList());
+
+        return matriculasCiclo;*/
 
 
-    public Matricula[] getMatriculas(String cursoAcademico) {
+        ArrayList<Matricula> matriculas = getMatriculas();
+        ArrayList<Matricula> matriculasCiclo = new ArrayList<>();
+
+        for (Matricula matricula : matriculas) {
+            if (matricula != null) {
+                for (Asignatura asignatura : matricula.getColeccionAsignaturas()) {
+                    if (asignatura.getCicloFormativo().equals(cicloFormativo)) {
+                        matriculasCiclo.add(matricula);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return matriculasCiclo;
+
+
+
+}
+
+
+    public ArrayList<Matricula> getMatriculas(String cursoAcademico) {
         if (cursoAcademico==null){
             throw new NullPointerException(" No se puede buscar matrículas de un curso académico nulo.");
         }
-        return matriculas.get(cursoAcademico);
+
+
+        /*ArrayList<Matricula> matriculasCurso = matriculas.stream()
+                .filter(matricula -> matricula != null  && matricula.getCursoAcademico().equals(cursoAcademico))
+                .collect(Collectors.toList());
+        */
+
+        ArrayList<Matricula> matriculas = new ArrayList<>(getMatriculas());
+        ArrayList<Matricula> matriculasCurso = new ArrayList<>();
+
+        for (Matricula matricula : matriculas) {
+            if (matricula != null && cursoAcademico.equals(matricula.getCursoAcademico())) {
+                matriculasCurso.add(matricula);
+            }
+        }
+
+        return matriculasCurso;
     }
 
 }

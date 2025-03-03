@@ -37,9 +37,9 @@ public class Matricula {
         setFechaMatriculacion(fechaMatriculacion);
         setAlumno(alumno);
 
-        if(superaMaximoNumeroHorasMatricula(coleccionAsignaturas)){
+        /*if(superaMaximoNumeroHorasMatricula(coleccionAsignaturas)){
             throw new OperationNotSupportedException("ERROR: No se puede realizar la matrícula ya que supera el máximo de horas permitidas (1000 horas).");
-        }
+        }*/
 
         setColeccionAsignaturas(coleccionAsignaturas);
 

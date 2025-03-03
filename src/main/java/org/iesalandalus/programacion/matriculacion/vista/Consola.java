@@ -1,18 +1,15 @@
 package org.iesalandalus.programacion.matriculacion.vista;
 
-import org.iesalandalus.programacion.matriculacion.MainApp;
 //import org.iesalandalus.programacion.matriculacion.dominio.*;
-import org.iesalandalus.programacion.matriculacion.modelo.Modelo;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 
 public class Consola {
@@ -351,94 +348,105 @@ public class Consola {
     }
 
 
-    public static Matricula leerMatricula(Alumno alumno, Asignatura[] asignaturas) {
-        try {
+    public static Matricula leerMatricula(Alumno alumno, ArrayList<Asignatura> asignaturas)
+            throws OperationNotSupportedException {
 
-            System.out.print("Introduce el curso académico: ");
-            String cursoAcademico = Entrada.cadena();
-            if (cursoAcademico == null || cursoAcademico.isBlank()) {
-                throw new IllegalArgumentException("ERROR: El curso académico no puede ser nulo o estar en blanco.");
-            }
-
-            LocalDate fechaMatriculacion = leerFecha("Introduce la fecha de matriculación (dd/MM/yyyy): ");
-
-            System.out.print("Introduce el número de asignaturas para la matrícula: ");
-            int numAsignaturas = Entrada.entero();
-            if (numAsignaturas <= 0) {
-                throw new IllegalArgumentException("ERROR: El número de asignaturas debe ser mayor que cero.");
-            }
-
-            Asignatura[] coleccionAsignaturas = new Asignatura[numAsignaturas];
-            for (int i = 0; i < numAsignaturas; i++) {
-                System.out.println("Introduce los datos de la asignatura " + (i + 1) + ":");
-                //CiclosFormativos ciclosFormativos = new CiclosFormativos(Modelo.CAPACIDAD);  // Crear un objeto CiclosFormativos temporalment
-
-                Asignatura asignatura = getAsignaturaPorCodigo();
-                if (!asignaturaYaMatriculada(coleccionAsignaturas, asignatura)) {
-                    coleccionAsignaturas[i] = asignatura;
-                } else {
-                    System.out.println("ERROR: La asignatura ya está matriculada.");
-                    i--;
-                }
-            }
-
-            return new Matricula(1, cursoAcademico, fechaMatriculacion, alumno, coleccionAsignaturas);
-        } catch (IllegalArgumentException | NullPointerException | OperationNotSupportedException e) {
-
-            throw new RuntimeException("ERROR: No se puede realizar la matrícula: " + e.getMessage());
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: El alumno de una matrícula no puede ser nulo.");
         }
+        if (asignaturas == null || asignaturas.size() == 0) {
+            throw new NullPointerException("ERROR: Las asignaturas de una matrícula no pueden ser nulas.");
+        }
+
+        int idMatricula;
+        String cursoAcademico;
+        LocalDate fechaMatriculacion;
+        Matricula matricula;
+
+        System.out.println("Introduzca el Id de la Matrícula.");
+        idMatricula = Entrada.entero();
+
+        System.out.println("Introduzca el Curso Académico.");
+        System.out.println("El curso academico tiene que tener el formato 24-25");
+        cursoAcademico = Entrada.cadena();
+
+        String mensaje = "Introduzca la Fecha de matriculación.";
+
+        System.out.println("La fecha de matriculación como maximo puede ser de 15 días anterior al día actual");
+        fechaMatriculacion = leerFecha(mensaje);
+
+        matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion, alumno, asignaturas);
+
+        return matricula;
     }
 
-    public static Asignatura[] elegirAsignaturasMatricula(Asignatura[] asignaturas) {
+    public static ArrayList<Asignatura> elegirAsignaturasMatricula(ArrayList<Asignatura> asignaturas) {
         System.out.print("Introduce el número de asignaturas para la matrícula: ");
         int numAsignaturas = Entrada.entero();
         if (numAsignaturas <= 0) {
             throw new IllegalArgumentException("ERROR: El número de asignaturas debe ser mayor que cero.");
         }
 
-        Asignatura[] coleccionAsignaturas = new Asignatura[numAsignaturas];
-        for (int i = 0; i < numAsignaturas; i++) {
-            System.out.println("Introduce el código de la asignatura " + (i + 1) + ":");
-            String codigo = Entrada.cadena();
-            boolean encontrada = false;
-            for (Asignatura asignatura : asignaturas) {
-                if (asignatura.getCodigo().equals(codigo)) {
-                    if (!asignaturaYaMatriculada(coleccionAsignaturas, asignatura)) {
-                        coleccionAsignaturas[i] = asignatura;
-                        encontrada = true;
-                        break;
-                    } else {
-                        System.out.println("ERROR: La asignatura ya está matriculada.");
-                    }
-                }
-            }
-            if (!encontrada) {
-                System.out.println("ERROR: La asignatura con código " + codigo + " no se encuentra disponible.");
-                i--;
-            }
+        ArrayList<Asignatura> asignaturasElegidas = new ArrayList<>();
+        System.out.println("Asignaturas disponibles:");
+        for (Asignatura asignatura : asignaturas){
+            System.out.println(asignatura);
         }
-        return coleccionAsignaturas;
+        System.out.println("Elige el código una o varias asignatura:");
+        int contadorAsignaturas = 0;
+         do{
+             Asignatura asignaturaFalsa = Consola.getAsignaturaPorCodigo();
+             for (Asignatura asignatura : asignaturas){
+                 if (asignaturaFalsa.equals(asignatura)){
+                     asignaturasElegidas.add(asignatura) ;
+                     contadorAsignaturas++;
+                 }
+             }
+         }while(contadorAsignaturas<numAsignaturas);
+
+
+            return asignaturasElegidas;
+
+
+//        for (int i = 0; i < numAsignaturas; i++) {
+//            System.out.println("Introduce el código de la asignatura " + (i + 1) + ":");
+//            String codigo = Entrada.cadena();
+//
+//            boolean encontrada = false;
+//            for (Asignatura asignatura : asignaturas) {
+//                if (asignatura.getCodigo().equals(codigo)) {
+//                    if (!asignaturaYaMatriculada(coleccionAsignaturas, asignatura)) {
+//                        coleccionAsignaturas[i] = asignatura;
+//                        encontrada = true;
+//                        break;
+//                    } else {
+//                        System.out.println("ERROR: La asignatura ya está matriculada.");
+//                    }
+//                }
+//            }
+//            if (!encontrada) {
+//                System.out.println("ERROR: La asignatura con código " + codigo + " no se encuentra disponible.");
+//                i--;
+//            }
+//        }
+//        return coleccionAsignaturas;
     }
 
 
     // Método para obtener una matrícula por identificador
-    public static Matricula getMatriculaPorIdentificador() {
-        try {
-            System.out.print("Introduce el identificador de la matrícula: ");
-            int idMatricula = Entrada.entero();
+    public static Matricula getMatriculaPorIdentificador() throws OperationNotSupportedException {
+        int idMatricula;
+        String cursoAcademico = "24-25";
+        LocalDate fechaMatriculacion = LocalDate.now();
+        Alumno alumno = new Alumno("ficticio apellidoficticio", "12345678Z", "ficticio@ficticio.es", "444444444",
+                LocalDate.of(2000, 8, 21));
 
-            if (idMatricula <= 0) {
-                throw new IllegalArgumentException("ERROR: El identificador no puede ser menor o igual a cero.");
-            }
+        System.out.println("Introduzca el ID de la Matrícula(ID del ciclo formativo).");
+        idMatricula = Entrada.entero();
 
+        Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion, alumno, new Asignaturas().get());
 
-            return new Matricula(idMatricula, "21-22", LocalDate.now(),
-                    new Alumno("NombreFicticio", "12345678Z", "correo@ejemplo.com", "123456789", LocalDate.of(2000, 1, 1)),
-                    new Asignatura[0]);
-        } catch (IllegalArgumentException | OperationNotSupportedException e) {
-
-            throw new RuntimeException("ERROR: No se puede crear la matrícula: " + e.getMessage());
-        }
+        return matricula;
     }
 
 

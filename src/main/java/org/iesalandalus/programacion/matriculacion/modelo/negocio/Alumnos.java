@@ -13,13 +13,13 @@ public class Alumnos {
 
     public Alumnos() {
 
-        this.coleccionAlumnos = new ArrayList<>();
+        this.coleccionAlumnos = new ArrayList<Alumno>();
     }
 
-    //TODO REVISAR
+
     public ArrayList<Alumno> get() {
-        return new ArrayList<>(coleccionAlumnos);
-        //return copiaProfundaAlumnos();
+        return copiaProfundaAlumnos();
+
     }
 
     private ArrayList<Alumno> copiaProfundaAlumnos() {
@@ -40,6 +40,8 @@ public class Alumnos {
         return coleccionAlumnos.size();
     }
 
+
+
     public void insertar(Alumno alumno) throws OperationNotSupportedException {
         if (alumno == null) {
             throw new NullPointerException("ERROR: No se puede insertar un alumno nulo.");
@@ -47,11 +49,11 @@ public class Alumnos {
         if (buscar(alumno) != null) {
             throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese dni.");
         }
-        coleccionAlumnos.add(alumno);
+        coleccionAlumnos.add(new Alumno (alumno));
     }
 
 
-
+/*
     private int buscarIndice(Alumno alumno) {
         if (alumno == null) {
             throw new NullPointerException("ERROR: No se puede buscar un alumno nulo.");
@@ -61,7 +63,7 @@ public class Alumnos {
 
     }
 
-
+*/
 
     public Alumno buscar(Alumno alumno) {
         if (alumno == null) {
