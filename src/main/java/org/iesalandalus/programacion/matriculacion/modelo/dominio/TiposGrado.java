@@ -5,7 +5,7 @@ public enum TiposGrado {
     GRADOD("Grado D"),
     GRADOE("Grado E");
 
-    private final String CadenaAMostrar;
+    private final String cadenaAMostrar;
 
     private TiposGrado (String cadenaAMostrar){
         this.cadenaAMostrar= cadenaAMostrar;
