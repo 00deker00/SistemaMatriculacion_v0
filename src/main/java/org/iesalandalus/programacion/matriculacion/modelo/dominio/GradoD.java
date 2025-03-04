@@ -25,7 +25,7 @@ public class GradoD extends Grado {
 
     public void setNumAnios(int numAnios){
         if (numAnios < 2 || numAnios > 3){
-            throw new IllegalArgumentException("El número de grados de este tipo solo podrá ser 2 o 3.");
+            throw new IllegalArgumentException("El número de años de los grados de este tipo solo podrá ser 2 o 3.");
         }
         //heredado
         this.numAnios = numAnios;
@@ -34,7 +34,7 @@ public class GradoD extends Grado {
     @Override
     public String toString() {
         return super.toString() +
-                "- Años: " + numAnios +
-                "- Modalidad: " + modalidad;
+                " - Años: " + numAnios +
+                " - Modalidad: " + modalidad;
     }
 }
