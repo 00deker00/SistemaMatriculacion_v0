@@ -492,7 +492,7 @@ public class Consola {
         return false;
     }
 
-
+//Lee matrícula
     public static Matricula leerMatricula(Alumno alumno, ArrayList<Asignatura> asignaturas)
             throws OperationNotSupportedException {
 
