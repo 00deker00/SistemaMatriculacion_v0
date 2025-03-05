@@ -14,7 +14,7 @@ public enum TiposGrado {
     //EL ORDINAL DEVUELVE EL NUMERO EMPEZANDO DESDE 0
     public String imprimir(){
         return ordinal() + ".-" + cadenaAMostrar;
-    };
+    }
 
 
 }

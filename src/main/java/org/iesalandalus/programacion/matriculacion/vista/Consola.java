@@ -154,9 +154,140 @@ public class Consola {
         return fecha;
     }
 
+    //CAMBIO V6
+//PERMITE AL USUARIO ELEGIR ENTRE GRADO E O GRADO D
+    public static TiposGrado leerTiposGrado(){
+        TiposGrado tipoDeGradoSeleccionado = null;
+
+        do {
+            System.out.println("Selecciona un tipo de grado:");
+            //MOSTRAR LAS OPCIONES CON SU ÍNDICE
+            for (TiposGrado tipogrado : TiposGrado.values()){
+                System.out.println(tipogrado.imprimir());
+            }
+
+            int opcion = Entrada.entero();
+            if (opcion >= 0 && opcion < TiposGrado.values().length) {
+                tipoDeGradoSeleccionado = TiposGrado.values()[opcion];
+            } else {
+                System.out.println("ERROR: Índice fuera de rango. Inténtalo de nuevo.");
+            }
+
+        } while (tipoDeGradoSeleccionado == null);
+        return tipoDeGradoSeleccionado;
+
+        /*
+        do{
+
+            try{
+                System.out.println("Selecciona un tipo de grado:");
+                //MOSTRAR LAS OPCIONES CON SU ÍNDICE
+                for (TiposGrado tipogrado : TiposGrado.values()){
+                    System.out.println(tipogrado.imprimir());
+                }
+
+                int opcion = Entrada.entero();
+                tipoDeGradoSeleccionado = TiposGrado.values()[opcion];
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("ERROR: Índice fuera de rango. Inténtalo de nuevo.");
+            } catch (NullPointerException e) {
+                System.out.println("Ha introducido una opción inválida. Introduzca un número entre 0-1. ");
+            }
+        }while (tipoDeGradoSeleccionado == null);
+        */
+
+    }
+
+    //CAMBIO V6
+    //PERMITE AL USUARIO ELEGIR ENTRE MODALIDAD PRESENCIAL O SEMIPRESENCIAL
+    public static Modalidad leerModalidad() {
+        Modalidad modalidadSeleccionada = null;
+
+        do{
+            System.out.println("Selecciona una modalidad: ");
+            //MOSTRAR LAS OPCIONES CON SU ÍNDICE
+            for (Modalidad tipoGrado : Modalidad.values()){
+                System.out.println(tipoGrado.imprimir());
+            }
+
+
+            int opcion = Entrada.entero();
+            if (opcion >= 0 && opcion < Modalidad.values().length) {
+                modalidadSeleccionada = Modalidad.values()[opcion];
+            } else {
+                System.out.println("ERROR: Índice fuera de rango. Inténtalo de nuevo.");
+            }
+        } while (modalidadSeleccionada == null);
+        return modalidadSeleccionada;
+
+
+
+        /*
+        do{
+            try{
+                System.out.println("Selecciona una modalidad: ");
+                //MOSTRAR LAS OPCIONES CON SU ÍNDICE
+                for (Modalidad tipoGrado : Modalidad.values()){
+                    System.out.println(tipoGrado.imprimir());
+                }
+
+                int opcion = Entrada.entero();
+                modalidadSeleccionada = Modalidad.values()[opcion];
+
+            }catch (IllegalArgumentException e) {
+                System.out.println("ERROR: Índice fuera de rango. Inténtalo de nuevo.");
+            } catch (NullPointerException e) {
+                System.out.println("Ha introducido una opción inválida. Introduzca un número entre 0-1. ");
+            }
+
+
+
+        }while (modalidadSeleccionada == null);
+
+        return modalidadSeleccionada;
+        */
+    }
+
+
+    //CAMBIO V6 EN LEER GRADO:
+
 
     public static Grado leerGrado() {
         // Mostrar los grados disponibles
+        Grado grado = null;
+
+        TiposGrado tipo = leerTiposGrado();
+
+        if (tipo == TiposGrado.GRADOD){
+            System.out.println("Introduzca el nombre del grado:");
+            String nombre = Entrada.cadena();
+            System.out.println("Introduce el número de años del grado (debe ser 2 o 3)");
+            int numAnios = Entrada.entero();
+            Modalidad modalidad = leerModalidad();
+            grado = new GradoD(nombre, numAnios, modalidad);
+
+        }else if (tipo ==TiposGrado.GRADOE){
+            System.out.println("Introduce el nombre del grado");
+            String nombre = Entrada.cadena();
+            //NOTA AL PROFESOR: ¿ESTO NO ES REDUNDANTE?
+            //Es decir, esto podría automatizarse el número de años del grado
+            // ya que no hay más opciones.
+            System.out.println("Introduce el número de años del grado (solo puede ser 1");
+            int numAnios = Entrada.entero();
+            System.out.println("Introduce el número de ediciones(Mayor que 0)");
+            int numEdiciones = Entrada.entero();
+            grado = new GradoE(nombre, numAnios, numEdiciones);
+
+        }
+
+        return grado;
+
+
+
+
+
+        /*
         Grado[] grados = Grado.values();
         for (int i = 0; i < grados.length; i++) {
             System.out.println(i + ". " + grados[i].imprimir() + " (" + grados[i].toString() + ")");
@@ -179,6 +310,9 @@ public class Consola {
 
         }while(!opcionValida);
         return grados[indice];
+
+
+         */
     }
 
 
@@ -228,8 +362,12 @@ public class Consola {
                 throw new IllegalArgumentException("ERROR: El código no puede ser menor o igual a cero.");
             }
 
+            //CAMBIO V6
+            //AÑADIR GRADO PARA CORREGIR ERRORES DE COMPILACIÓN
+            Grado grado = new GradoD("Grado Profesional", 2, Modalidad.SEMIPRESENCIAL);
 
-            return new CicloFormativo(codigo, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000);
+
+            return new CicloFormativo(codigo, "FamiliaFicticia", grado, "NombreFicticio", 2000);
         } catch (IllegalArgumentException e) {
 
             throw e;
@@ -322,7 +460,14 @@ public class Consola {
             }
 //DESCOMENTADA LA LÍNEA 326 Y COMENTADA LA LÍNEA 325
             //return MainApp.controlador.buscar(new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, new CicloFormativo(1234, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000)));
-            return new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, new CicloFormativo(1234, "FamiliaFicticia", Grado.GDCFGB, "NombreFicticio", 2000));
+
+            //CAMBIO V6
+            //AÑADIR GRADO PARA CORREGIR ERRORES DE COMPILACIÓN
+            //AÑADIR CICLO FORMATIVOO PARA CORREGIR ERRORES DE COMPILACIÓN
+            Grado grado = new GradoD("Grado Profesional", 2, Modalidad.SEMIPRESENCIAL);
+            CicloFormativo ciclo = new CicloFormativo(2222, "FamiliaFicticia", grado, "DAW", 11);
+
+            return new Asignatura(codigo, "NombreFicticio", 150, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, ciclo);
         } catch (IllegalArgumentException e) {
 
             throw e;
